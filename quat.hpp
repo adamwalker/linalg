@@ -49,14 +49,21 @@ void rotate(T q[4], T v[3], T out[3]){
 
 template <class T>
 void axis_to_quat(T scale, T *axis, T *out){
-    T nm = norm(3, axis);
-    T res[3];
-    divv(nm, 3, axis, res);
-    nm = nm * scale;
-    out[0] = cos(nm / 2);
     int i;
-    for(i=0; i<3; i++){
-        out[i+1] = res[i] * sin(nm / 2);
+    T nm = norm(3, axis);
+    if(nm == get_zero<T>()){
+        out[0] = 1;
+        for(i=0; i<3; i++){
+            out[i+1] = 0;
+        }
+    } else {
+        T res[3];
+        divv(nm, 3, axis, res);
+        nm = nm * scale;
+        out[0] = cos(nm / 2);
+        for(i=0; i<3; i++){
+            out[i+1] = res[i] * sin(nm / 2);
+        }
     }
 }
 
